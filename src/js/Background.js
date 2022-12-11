@@ -11,10 +11,10 @@ class Background {
         this.ctx = ctx;
 
         this.srcImageBackground = new Image();
-        this.srcImageBackground.src = "../assets/sprites/background-day.png";
+        this.srcImageBackground.src = "./assets/sprites/background-day.png";
 
         this.srcImageForeground = new Image();
-        this.srcImageForeground.src = "../assets/sprites/base.png";
+        this.srcImageForeground.src = "./assets/sprites/base.png";
 
         this.foregroundSpeed = 0.3;
         this.backgroundSpeed = 0.1;
@@ -40,7 +40,7 @@ class Background {
 
         this.ctx.drawImage(
             this.srcImageBackground,
-            this.srcImageBackground.width - this.#xBackground,
+            this.srcImageBackground.width - this.#xBackground - 1,
             0
         );
 
