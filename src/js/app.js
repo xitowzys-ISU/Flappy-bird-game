@@ -1,5 +1,6 @@
 import "../css/styles.css";
 import Background from "./Background";
+import Bird from "./Bird";
 import Game from "./Game";
 import Pipes from "./Pipes";
 import animation from "./utils/animation";
@@ -11,10 +12,12 @@ const ctx = canvas.getContext("2d");
 
 const speed = 0.5;
 
+const game = new Game(canvas, ctx);
 const pipes = new Pipes(canvas, ctx, speed);
 const bg = new Background(canvas, ctx);
+const bird = new Bird(canvas, ctx);
 
-const game = new Game(canvas, ctx);
+
 
 function run() {
 
@@ -29,13 +32,15 @@ function run() {
             case game.states.game:
                 console.log("flap");
 
-                // ? Debug
-                game.state = game.states.gameOver;
+                // // ? Debug
+                // game.state = game.states.gameOver;
+                bird.flap();
 
                 break;
             case game.states.gameOver:
                 game.state = game.states.getReady;
                 game.restartGame(pipes.pipes);
+                bird.resetBirdPosition();
                 break;
         }
     });
@@ -51,6 +56,12 @@ function run() {
             if (game.state === game.states.game) {
                 bg.update(params);
                 pipes.update(params);
+                bird.update(params);
+
+                if (bird.detectCollision(pipes)) {
+                    game.state = game.states.gameOver;
+                }
+
             }
         },
 
@@ -70,6 +81,8 @@ function run() {
                 pipes.render(params);
                 game.renderGameOver();
             }
+
+            bird.render(params);
 
         },
     });

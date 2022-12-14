@@ -30,6 +30,7 @@ class Game {
             console.log(pipe);
             pipes.shift();
         });
+        
     }
 
     renderGetReady() {
