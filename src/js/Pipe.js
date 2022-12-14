@@ -13,7 +13,7 @@ class Pipe {
 
         this.speed = 0.1;
 
-        this.xMove = 0;
+        this.xMove = 30;
         this.yMove = 0;
 
         this.pipe = null;

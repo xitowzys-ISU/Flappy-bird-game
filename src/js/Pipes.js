@@ -28,6 +28,9 @@ class Pipes {
 
     update(params) {
         this.pipes.forEach((pipe) => {
+
+            this.#movePipe(pipe);
+
             pipe.pipe.top.collision.x0 = this.canvas.width + pipe.xMove;
             pipe.pipe.bottom.collision.x0 = this.canvas.width + pipe.xMove;
             pipe.pipe.emptyCollision.collision.x0 = this.canvas.width + pipe.xMove;
@@ -50,8 +53,6 @@ class Pipes {
         this.pipes.forEach((pipe) => {
             // pipe.top(this.testRotate)
 
-            this.#movePipe(pipe);
-
             pipe.pipe.bottom.draw();
             pipe.pipe.top.draw();
 
@@ -71,7 +72,7 @@ class Pipes {
     }
 
     #movePipe(pipe) {
-        pipe.xMove -= 0.4;
+        pipe.xMove -= this.speed;
         // pipe.bottom.collision.x0 = 200;
         // console.log(pipe.bottom.collision.x0);
     }
@@ -106,6 +107,7 @@ class Pipes {
             }
         }
     }
+
 }
 
 export default Pipes;
