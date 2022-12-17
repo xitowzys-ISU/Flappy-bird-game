@@ -11,7 +11,7 @@ class Background {
         this.ctx = ctx;
 
         this.srcImageBackground = new Image();
-        this.srcImageBackground.src = "./assets/sprites/background-day.png";
+        this.srcImageBackground.src = "./assets/sprites/background-night.png";
 
         this.srcImageForeground = new Image();
         this.srcImageForeground.src = "./assets/sprites/base.png";

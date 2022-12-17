@@ -22,7 +22,7 @@ class Pipes {
 
         this.speed = speed;
 
-        this.interval = 4000;
+        this.interval = 2000;
         this.#timestamp = 1;
 
 
@@ -95,7 +95,7 @@ class Pipes {
         let pipe = new Pipe(this.canvas, this.ctx);
 
 
-        console.log(Math.random() + 1);
+        // console.log(Math.random() + 1);
 
         pipe.srcImagePipe.onload = () => {
             pipe.generatePipe(Math.floor(Math.random() * 200) + 60, 100);
@@ -118,7 +118,7 @@ class Pipes {
     #deletePipe() {
 
         if (this.pipes.length != 0) {
-            if (this.pipes[0].pipe.bottom.collision.x0 < -100) {
+            if (this.pipes[0].pipe.bottom.collision.x0 < -400) {
                 console.debug("DELETE");
                 this.pipes.shift();
             }

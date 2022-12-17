@@ -15,23 +15,23 @@ class Bird {
             // this.srcCurrentBird.src = "./assets/sprites/bluebird-downflap.png";
 
             this.x = (this.canvas.width - this.srcCurrentBird.width) / 2;
-            console.log(this.srcCurrentBird.width);
+            // console.log(this.srcCurrentBird.width);
             this.y = 210 + this.dy;
         }
 
-        this.srcCurrentBird.src = "./assets/sprites/bluebird-downflap.png";
+        this.srcCurrentBird.src = "./assets/sprites/redbird-downflap.png";
 
 
         this.bird = function () {
 
             let srcBirdDownFlap = new Image();
-            srcBirdDownFlap.src = "./assets/sprites/bluebird-downflap.png";
+            srcBirdDownFlap.src = "./assets/sprites/redbird-downflap.png";
 
             let srcBirdMidFlap = new Image();
-            srcBirdMidFlap.src = "./assets/sprites/bluebird-midflap.png";
+            srcBirdMidFlap.src = "./assets/sprites/redbird-midflap.png";
 
             let srcBirdUpFlap = new Image();
-            srcBirdUpFlap.src = "./assets/sprites/bluebird-upflap.png";
+            srcBirdUpFlap.src = "./assets/sprites/redbird-upflap.png";
 
 
             return {
@@ -48,6 +48,8 @@ class Bird {
         this.dx = 0;
         this.dy = 0;
 
+        this.rotation = 0;
+
         this.animationBird();
     }
 
@@ -58,7 +60,7 @@ class Bird {
 
         this.bird.images.forEach((value, index, array) => {
             this.srcCurrentBird = value;
-            console.log(this.srcCurrentBird);
+            // console.log(this.srcCurrentBird);
         })
 
         let countImg = 0;
@@ -88,6 +90,7 @@ class Bird {
     // }
 
     update(params) {
+        this.y += this.dy;
         this.dy += this.gravity;
     }
 
@@ -95,29 +98,29 @@ class Bird {
         this.dy -= this.jump;
     }
 
-    detectCollision(pipes, fg, count) {
+    toRadians(degrees) {
+        return degrees * Math.PI / 180;
+    }
+
+    detectCollision(pipes, fg, count, audio) {
         //!
 
         if (this.y <= 0) {
-            this.dy = 0;
             return true;
         }
 
 
         if (this.y + this.srcCurrentBird.height >= this.canvas.height - fg.srcImageForeground.height) {
-            this.dy = 0;
             return true;
         }
 
         // console.log(pipes);
 
+        let detect = false;
+
         if (pipes.length != 0) {
+            pipes.forEach((pipe, index, array) => {
 
-            let delect = false;
-
-            pipes.every((pipe) => {
-
-                // Top pipe detect
                 if (
                     pipe.pipe.top.collision.x0 < this.x + this.srcCurrentBird.width &&
                     pipe.pipe.top.collision.x0 + pipe.pipe.top.collision.x1 > this.x &&
@@ -125,24 +128,20 @@ class Bird {
                     pipe.pipe.top.collision.y0 < this.y + this.srcCurrentBird.width &&
                     pipe.pipe.top.collision.y1 + pipe.pipe.top.collision.y0 > this.y) {
                     console.error("DETECT");
-                    delect = true;
-                    return;
+                    detect = true;
+                    // return;
                 }
 
-
-                // Bottom pipe detect
                 if (
                     pipe.pipe.bottom.collision.x0 < this.x + this.srcCurrentBird.width &&
                     pipe.pipe.bottom.collision.x0 + pipe.pipe.bottom.collision.x1 > this.x &&
                     pipe.pipe.bottom.collision.y0 + 10 < this.y + this.srcCurrentBird.width &&
                     pipe.pipe.bottom.collision.y1 + pipe.pipe.bottom.collision.y0 > this.y) {
                     console.error("DETECT");
-                    delect = true;
-                    return;
+                    detect = true;
+                    // return;
                 }
 
-
-                // Count detect
                 if (
                     pipe.pipe.emptyCollision.collision.x0 < this.x + this.srcCurrentBird.width &&
                     pipe.pipe.emptyCollision.collision.x0 + pipe.pipe.emptyCollision.collision.x1 > this.x
@@ -157,14 +156,14 @@ class Bird {
 
                     pipe.pipe.emptyCollision.collision.used = false;
                     count.count += 1;
+                    audio.play("point");
 
                 }
             })
+        }
 
-            if (delect) {
-                this.dy = 0;
-                return true;
-            }
+        if (detect) {
+            return true;
         }
 
         return false;
@@ -180,17 +179,23 @@ class Bird {
 
     render(params) {
 
-        // this.animationBird(params.fps);
+        this.rotation = this.dy * 4;
 
-        this.y += this.dy;
+        this.ctx.save();
+
+        this.ctx.translate(this.x, this.y);
+        this.ctx.rotate(this.toRadians(this.rotation));
+
+        // this.#drawCollision(this.x + 20, this.y, this.srcCurrentBird.width, this.srcCurrentBird.height, "black")
+
 
         this.ctx.drawImage(
             this.srcCurrentBird,
-            this.x,
-            this.y
+            0,
+            0
         );
 
-        this.#drawCollision(this.x, this.y, this.srcCurrentBird.width, this.srcCurrentBird.height, "yellow")
+        this.ctx.restore();
     }
 }
 

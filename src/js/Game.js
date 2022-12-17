@@ -27,10 +27,10 @@ class Game {
 
     restartGame(pipes) {
         pipes.forEach((pipe) => {
-            console.log(pipe);
+            // console.log(pipe);
             pipes.shift();
         });
-        
+
     }
 
     renderGetReady() {
