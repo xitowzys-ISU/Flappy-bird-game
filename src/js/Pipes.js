@@ -18,12 +18,14 @@ class Pipes {
         // this.#generatePipe();
 
 
-        this.showCollision = true;
+        this.showCollision = false;
 
         this.speed = speed;
 
-        this.interval = 8000;
+        this.interval = 4000;
         this.#timestamp = 1;
+
+
     }
 
     update(params) {
@@ -38,17 +40,27 @@ class Pipes {
             // console.log(pipe.pipe);
         });
 
+        // console.log(`timestamp: ${this.#timestamp}`);
+
+        if (params.timestamp > this.#timestamp) {
+            this.#timestamp = params.timestamp + this.interval;
+            // this.#timestamp += this.interval;
+            this.#generatePipe();
+            // generatePipes();
+            // console.log("go");
+        }
+
         // this.#deletePipe();
     }
 
     render(params) {
 
-        if (params.timestamp > this.#timestamp) {
-            this.#timestamp += this.interval;
-            this.#generatePipe();
-            // generatePipes();
-            // console.log("go");
-        }
+        // if (params.timestamp > this.#timestamp) {
+        //     this.#timestamp += this.interval;
+        //     this.#generatePipe();
+        //     // generatePipes();
+        //     // console.log("go");
+        // }
 
         this.pipes.forEach((pipe) => {
             // pipe.top(this.testRotate)
@@ -78,13 +90,18 @@ class Pipes {
     }
 
     #generatePipe() {
+
+
         let pipe = new Pipe(this.canvas, this.ctx);
+
 
         console.log(Math.random() + 1);
 
-        pipe.generatePipe(Math.floor(Math.random() * 290) + 2, 100);
+        pipe.srcImagePipe.onload = () => {
+            pipe.generatePipe(Math.floor(Math.random() * 200) + 60, 100);
 
-        this.pipes.push(pipe);
+            this.pipes.push(pipe);
+        }
 
         // console.log(this.pipes);
         // console.log(pipe.addPipes(30, 40));

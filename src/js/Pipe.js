@@ -17,11 +17,9 @@ class Pipe {
         this.yMove = 0;
 
         this.pipe = null;
-
     }
 
     generatePipe(height, gap) {
-
         let xAddition = 0;
 
         if (height < 0) {
@@ -114,7 +112,8 @@ class Pipe {
                 x0: this.canvas.width,
                 y0: 80 + height - gap + xAddition,
                 x1: this.srcImagePipe.width,
-                y1: gap - xAddition
+                y1: gap - xAddition,
+                used: false
             }
         }
 

@@ -6,11 +6,21 @@ class Bird {
         /** @type {CanvasRenderingContext2D} */
         this.ctx = ctx;
 
-        this.gravity = 0.25;
+        this.gravity = 0.22;
         this.jump = 4.6;
 
         this.srcCurrentBird = new Image();
+
+        this.srcCurrentBird.onload = () => {
+            // this.srcCurrentBird.src = "./assets/sprites/bluebird-downflap.png";
+
+            this.x = (this.canvas.width - this.srcCurrentBird.width) / 2;
+            console.log(this.srcCurrentBird.width);
+            this.y = 210 + this.dy;
+        }
+
         this.srcCurrentBird.src = "./assets/sprites/bluebird-downflap.png";
+
 
         this.bird = function () {
 
@@ -38,11 +48,10 @@ class Bird {
         this.dx = 0;
         this.dy = 0;
 
-        this.x = (this.canvas.width - this.srcCurrentBird.width) / 2;
-        this.y = 210 + this.dy;
-
         this.animationBird();
     }
+
+
 
     animationBird(fps) {
         let step = fps / 3;
@@ -86,12 +95,76 @@ class Bird {
         this.dy -= this.jump;
     }
 
-    detectCollision(pipes, fg) {
+    detectCollision(pipes, fg, count) {
         //!
 
         if (this.y <= 0) {
             this.dy = 0;
             return true;
+        }
+
+
+        if (this.y + this.srcCurrentBird.height >= this.canvas.height - fg.srcImageForeground.height) {
+            this.dy = 0;
+            return true;
+        }
+
+        // console.log(pipes);
+
+        if (pipes.length != 0) {
+
+            let delect = false;
+
+            pipes.every((pipe) => {
+
+                // Top pipe detect
+                if (
+                    pipe.pipe.top.collision.x0 < this.x + this.srcCurrentBird.width &&
+                    pipe.pipe.top.collision.x0 + pipe.pipe.top.collision.x1 > this.x &&
+
+                    pipe.pipe.top.collision.y0 < this.y + this.srcCurrentBird.width &&
+                    pipe.pipe.top.collision.y1 + pipe.pipe.top.collision.y0 > this.y) {
+                    console.error("DETECT");
+                    delect = true;
+                    return;
+                }
+
+
+                // Bottom pipe detect
+                if (
+                    pipe.pipe.bottom.collision.x0 < this.x + this.srcCurrentBird.width &&
+                    pipe.pipe.bottom.collision.x0 + pipe.pipe.bottom.collision.x1 > this.x &&
+                    pipe.pipe.bottom.collision.y0 + 10 < this.y + this.srcCurrentBird.width &&
+                    pipe.pipe.bottom.collision.y1 + pipe.pipe.bottom.collision.y0 > this.y) {
+                    console.error("DETECT");
+                    delect = true;
+                    return;
+                }
+
+
+                // Count detect
+                if (
+                    pipe.pipe.emptyCollision.collision.x0 < this.x + this.srcCurrentBird.width &&
+                    pipe.pipe.emptyCollision.collision.x0 + pipe.pipe.emptyCollision.collision.x1 > this.x
+                ) {
+                    pipe.pipe.emptyCollision.collision.used = true;
+                }
+
+                if (pipe.pipe.emptyCollision.collision.used &&
+                    !(pipe.pipe.emptyCollision.collision.x0 < this.x + this.srcCurrentBird.width &&
+                        pipe.pipe.emptyCollision.collision.x0 + pipe.pipe.emptyCollision.collision.x1 > this.x)
+                ) {
+
+                    pipe.pipe.emptyCollision.collision.used = false;
+                    count.count += 1;
+
+                }
+            })
+
+            if (delect) {
+                this.dy = 0;
+                return true;
+            }
         }
 
         return false;
@@ -113,7 +186,7 @@ class Bird {
 
         this.ctx.drawImage(
             this.srcCurrentBird,
-            (this.canvas.width - this.srcCurrentBird.width) / 2,
+            this.x,
             this.y
         );
 

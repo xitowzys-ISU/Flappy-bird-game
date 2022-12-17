@@ -1,27 +1,34 @@
 import "../css/styles.css";
 import Background from "./Background";
 import Bird from "./Bird";
+import Count from "./Count";
 import Game from "./Game";
 import Pipes from "./Pipes";
 import animation from "./utils/animation";
 
 /** @type {HTMLCanvasElement} */
+
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 
-const speed = 0.5;
+const startSpeed = 2;
+
+let speed = 0;
 
 const game = new Game(canvas, ctx);
-const pipes = new Pipes(canvas, ctx, speed);
+const pipes = new Pipes(canvas, ctx, 0);
 const bg = new Background(canvas, ctx);
 const bird = new Bird(canvas, ctx);
+
+const count = new Count(canvas, ctx);
+
+// let counts = 0;
 
 
 
 function run() {
-
-    bg.foregroundSpeed = speed;
 
     canvas.addEventListener('click', (e) => {
 
@@ -30,12 +37,7 @@ function run() {
                 game.state = game.states.game;
                 break;
             case game.states.game:
-                console.log("flap");
-
-                // // ? Debug
-                // game.state = game.states.gameOver;
                 bird.flap();
-
                 break;
             case game.states.gameOver:
                 game.state = game.states.getReady;
@@ -53,16 +55,22 @@ function run() {
 
         update(params) {
 
+            speed = startSpeed + count.count * 0.02
+            pipes.speed = speed;
+            bg.foregroundSpeed = speed;
+            console.log(speed);
+
             if (game.state === game.states.game) {
                 bg.update(params);
                 pipes.update(params);
                 bird.update(params);
 
-                if (bird.detectCollision(pipes)) {
+                if (bird.detectCollision(pipes.pipes, bg, count)) {
                     game.state = game.states.gameOver;
                 }
 
             }
+
         },
 
         render(params) {
@@ -75,11 +83,13 @@ function run() {
 
             if (game.state === game.states.game) {
                 pipes.render(params);
+                count.render();
             }
 
             if (game.state === game.states.gameOver) {
                 pipes.render(params);
                 game.renderGameOver();
+                count.render();
             }
 
             bird.render(params);
@@ -89,3 +99,7 @@ function run() {
 }
 
 run();
+
+// setTimeout(function () {
+//     run();
+// }, 1000)
