@@ -9,7 +9,7 @@ class Pipe {
 
 
         this.srcImagePipe = new Image();
-        this.srcImagePipe.src = "./assets/sprites/pipe-green.png";
+        this.srcImagePipe.src = "./assets/sprites/pipe-pink.png";
 
         this.speed = 0.1;
 

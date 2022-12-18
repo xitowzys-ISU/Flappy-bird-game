@@ -19,19 +19,19 @@ class Bird {
             this.y = 210 + this.dy;
         }
 
-        this.srcCurrentBird.src = "./assets/sprites/redbird-downflap.png";
+        this.srcCurrentBird.src = "./assets/sprites/pinkbird-downflap.png";
 
 
         this.bird = function () {
 
             let srcBirdDownFlap = new Image();
-            srcBirdDownFlap.src = "./assets/sprites/redbird-downflap.png";
+            srcBirdDownFlap.src = "./assets/sprites/pinkbird-downflap.png";
 
             let srcBirdMidFlap = new Image();
-            srcBirdMidFlap.src = "./assets/sprites/redbird-midflap.png";
+            srcBirdMidFlap.src = "./assets/sprites/pinkbird-midflap.png";
 
             let srcBirdUpFlap = new Image();
-            srcBirdUpFlap.src = "./assets/sprites/redbird-upflap.png";
+            srcBirdUpFlap.src = "./assets/sprites/pinkbird-upflap.png";
 
 
             return {
@@ -156,7 +156,7 @@ class Bird {
 
                     pipe.pipe.emptyCollision.collision.used = false;
                     count.count += 1;
-                    audio.play("point");
+                    audio.play("point", 0.6);
 
                 }
             })

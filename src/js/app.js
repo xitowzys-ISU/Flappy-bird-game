@@ -36,17 +36,18 @@ function run() {
     let gamesEvents = function () {
         switch (game.state) {
             case game.states.getReady:
+                count.count = 0;
                 game.state = game.states.game;
                 audio.playLoop("background");
                 break;
             case game.states.game:
-                audio.play("flap");
+                audio.play("flap", 0.4);
                 bird.flap();
                 break;
             case game.states.gameOver:
-                audio.play("swoosh");
+                audio.play("swoosh", 0.3);
                 game.state = game.states.getReady;
-                game.restartGame(pipes.pipes);
+                game.restartGame(pipes);
                 bird.resetBirdPosition();
                 break;
         }
@@ -71,8 +72,9 @@ function run() {
 
         update(params) {
 
-            speed = startSpeed + count.count * 0.02
+            speed = startSpeed + count.count * 0.08
             pipes.speed = speed;
+            pipes.interval = (4000 / speed);
             bg.foregroundSpeed = speed;
             // console.log(speed);
 
@@ -82,8 +84,8 @@ function run() {
                 bird.update(params);
 
                 if (bird.detectCollision(pipes.pipes, bg, count, audio)) {
-                    audio.play("hit");
-                    audio.play("die");
+                    audio.play("hit", 0.8);
+                    audio.play("die", 0.8);
                     audio.stop("background");
                     game.state = game.states.gameOver;
                 }

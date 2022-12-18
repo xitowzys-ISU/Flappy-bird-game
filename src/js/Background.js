@@ -11,13 +11,19 @@ class Background {
         this.ctx = ctx;
 
         this.srcImageBackground = new Image();
-        this.srcImageBackground.src = "./assets/sprites/background-night.png";
+        this.srcImageBackground.src = "./assets/sprites/background.png";
+
+        this.srcImageBackground_1 = new Image();
+        this.srcImageBackground_1.src = "./assets/sprites/background_1.png";
+
+        this.srcImageBackground_2 = new Image();
+        this.srcImageBackground_2.src = "./assets/sprites/background_2.png";
 
         this.srcImageForeground = new Image();
-        this.srcImageForeground.src = "./assets/sprites/base.png";
+        this.srcImageForeground.src = "./assets/sprites/base_pink.png";
 
         this.foregroundSpeed = 0.3;
-        this.backgroundSpeed = 0.1;
+        this.backgroundSpeed = 1;
     }
 
 
@@ -32,19 +38,32 @@ class Background {
     }
 
     #renderBackground() {
+
         this.ctx.drawImage(
             this.srcImageBackground,
+            0,
+            0
+        );
+
+        this.ctx.drawImage(
+            this.srcImageBackground_1,
             0 - this.#xBackground,
             0
         );
 
         this.ctx.drawImage(
-            this.srcImageBackground,
-            this.srcImageBackground.width - this.#xBackground - 1,
+            this.srcImageBackground_2,
+            this.srcImageBackground_2.width - this.#xBackground - 1,
             0
         );
 
-        if (this.#xBackground >= this.srcImageBackground.width) {
+        this.ctx.drawImage(
+            this.srcImageBackground_1,
+            this.srcImageBackground_2.width * 2 - this.#xBackground - 1,
+            0
+        );
+
+        if (this.#xBackground >= this.srcImageBackground_2.width * 2) {
             this.#xBackground = 0.0;
         }
 

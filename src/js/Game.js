@@ -26,10 +26,11 @@ class Game {
     }
 
     restartGame(pipes) {
-        pipes.forEach((pipe) => {
-            // console.log(pipe);
-            pipes.shift();
-        });
+        // pipes.forEach((pipe) => {
+        //     // console.log(pipe);
+        //     pipes.shift();
+        // });
+        pipes.pipes = Array();
 
     }
 

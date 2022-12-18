@@ -1,10 +1,10 @@
 class Audios {
     constructor(collection) {
         this.collection = {
-            point: './assets/audio/point.wav',
-            flap: './assets/audio/wing.wav',
-            hit: './assets/audio/hit.wav',
-            swoosh: './assets/audio/swoosh.wav',
+            point: './assets/audio/point.ogg',
+            flap: './assets/audio/wing.ogg',
+            hit: './assets/audio/hit.ogg',
+            swoosh: './assets/audio/swoosh.ogg',
             die: './assets/audio/die.ogg',
             background: './assets/audio/background.ogg'
         };
@@ -23,11 +23,13 @@ class Audios {
      * Play a sound from the collection by its name
      * @param {string} name 
      */
-    play(name) {
+    play(name, volume = 1) {
         if (this.collection[name].paused) {
+            this.collection[name].volume = volume;
             this.collection[name].play();
         } else {
             this.collection[name].pause();
+            this.collection[name].volume = volume;
             this.collection[name].currentTime = 0;
             this.collection[name].play();
         }
